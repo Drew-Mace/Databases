@@ -1,0 +1,35 @@
+1. All the numbers are integers, while the values are strings.
+
+2. You would use a database if you would need to read and write data. You could use a text file if the data you were using was going to remained unchanged and you only had to read from it. 
+
+3. SQLs syntax is written like a statement in that you are just telling it what you want it to do and not how to do it. 
+
+4. A database is a table. In the table you have headings that declare what the data is representing. The data is easily read or written to by using the names of the headings or values that represent the actual data. 
+
+5. Table is the whole picture. It includes all the information stored in the column and rows. The columns are the `headings.` They tell the table what the data in that column represents. The rows are what make up the entirety of data for a specific object stored in the database. The rows will potentially contain values for the object under each column. The values are what make up each cell that isnt a cell used to declare a column. They are what stores the actual data, i.e. values.
+
+6. String, integer, object
+
+7. A: 5/1/2016 - 1500.00; 5/10/2016 - 37.00; 5/15/2016 - 124.93; 5/23/2016 - 54.72
+   B: 5/1/2016 - 1500.00
+   C: 5/15/2016 - 124.93
+   
+8. A: SELECT email, signup
+      FROM users
+      WHERE name = 'DeAndre Data';
+      
+      email = datad@comcast.net, signup = 2008-01-20
+      
+   B: SELECT userid
+      FROM users
+      WHERE email = 'aleesia.algorithm@uw.edu';
+      
+      userid = 1
+      
+   C: SELECT *
+      FROM: users
+      WHERE userid = 4;
+      
+      userid = 4, name = Brandy Boolean, email = bboolean@nasa.gov, 1999-10-15
+      
+
