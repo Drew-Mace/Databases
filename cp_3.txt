@@ -1,0 +1,108 @@
+1. Adding data would be INSERT INTO {table name} VALUES ({some value, some value});
+
+   Deleting data DELETE FROM {table name} WHERE {some criteria};
+   
+   Updating data UPDATE {table name} SET {some criteria} WHERE {some criteria};
+   
+2. All of the commands require the name of the table and then they need to know where they are manipulating the data, like above.
+
+3. money: $12.99
+   text: 'Hello world' (use single quotes!)
+   boolean: TRUE/FALSE
+   center: @@ circle '((0,0),10)'
+   
+4. First and last name: text
+   RSVP?:               Boolean
+   Number of guests:    integer
+   Number of meals:     integer
+   
+   
+   CREATE TABLE wedding (
+    fname text,
+    lname text,
+    rsvp boolean,
+    numguests integer,
+    nummeals integer
+    );
+    
+    ALTER TABLE wedding ADD COLUMN card boolean SET DEFAULT false;
+    
+    ALTER TABLE wedding ADD COLUMN table integer;
+    
+    DROP TABLE wedding;
+    
+5. CREATE TABLE library (     // using "" in columns '' for row data
+    ISBN integer,
+    Title text,
+    Author text,
+    Genre text,
+    "Publishing Date" date,
+    Copies integer,
+    "Available copies" integer
+    );
+    
+    INSERT INTO library (ISBN, Title, Author, Genre, "Publishing Date", Copies, "Available copies")
+    VALUES
+    (9781435122963, 'H.P. Lovecraft: The Complete Fiction', 'H.P. Lovecraft', 'Fiction', 2011/18/03, 1, 1),
+    (9780679720201, 'The Stranger', 'Albert Camus', 'Fiction', 1989/28/03, 1, 1),
+    (9780307389817, 'Pygmy', 'Chuck Palahniuk', 'Fiction', 2010/20/4, 1, 1);
+    
+    UPDATE library SET "Available copies"=0 WHERE Title='Pygmy';
+    
+    DELETE FROM library
+    WHERE Title = 'The Stranger';
+  
+6. CREATE TABLE spacecrafts (
+    id integer,
+    name text,
+    "year launched" integer,
+    country text,
+    "Mission desc" text,
+    "orbiting body" text,
+    operating boolean,
+    "approx miles from earth" integer
+    );
+    
+    
+    INSERT INTO spacecrafts (id, name, "year launched", country, "Mission desc", "orbiting body", operating, "approx miles from earth")
+    VALUES
+    (1, 'Cassini', 1997, 'USA', 'study Saturn', 'Saturn', false, 6122323),
+    (2, 'Curiosity', 2011, 'USA', 'study Mars surface', 'Mars', true, 33554044),
+    (3, 'Phobos 2', 1988, 'Soviet Union', 'explore Phobos and Deimos', 'Mars', false, 33543670);
+    
+    DELETE FROM spacecrafts
+    WHERE id = 1;
+    
+    UPDATE spacecrafts SET operating=false WHERE id=2; (If I just jinxed this and the rover stops working I am blaming BLOC!!!!)
+    
+7. CREATE TABLE email(
+    id integer,
+    subject text,
+    sender citext UNIQUE,
+    cc citext UNIQUE,
+    body text,
+    timestamp timestamp,
+    read boolean,
+    "chain id" integer
+    );
+    
+    INSERT INTO email (id, subject, sender, cc, body, timestamp, read, "chain id")
+    VALUES
+    (1, 'Frank's suprise party', 'joe@bro.com', 'frank@bro.com', 'Are you guys going to the party?', '2016-06-22 19:10:25-07', FALSE, 0),
+    (2, 'Order shipped', 'amazon@amazon.com', 'none', 'Your order has been shipped!', '2017-09-16 12:15:35-03', TRUE, 0),
+    (3, 'Nigerian Prince needs help', 'totallynotspam@spam.com', 'everyone@gmail.com', 'Nigerian Prince trapped in space, need funds to help get him back before aliens get him, please help', '2016-12-24 15:37:58-2', FALSE, 1);
+    
+    DELETE FROM email
+    WHERE id = 3;
+    
+    UPDATE spacecrafts SET cc='tim@bro.com' WHERE cc='frank@bro.com';
+    
+    
+    
+    
+    
+    
+  
+    
+    
+    
