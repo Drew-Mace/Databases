@@ -29,6 +29,8 @@
     
     ALTER TABLE wedding ADD COLUMN table integer;
     
+    ALTER TABLE wedding DROP COLUMN nummeals;
+    
     DROP TABLE wedding;
     
 5. CREATE TABLE library (     // using "" in columns '' for row data
@@ -96,13 +98,3 @@
     WHERE id = 3;
     
     UPDATE spacecrafts SET cc='tim@bro.com' WHERE cc='frank@bro.com';
-    
-    
-    
-    
-    
-    
-  
-    
-    
-    
