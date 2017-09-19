@@ -4,7 +4,20 @@
    
 2. Found on our walls, giant hairy spiders drinking over by Tommy. (FROM, ON, OUTER, WHERE, GROUP BY, HAVING, SELECT, DISTINCT, ORDER BY, TOP)
 
-3. /* Will be pets database questions.
+3. *Boujee, F, 3; Marley, M, 0;
+
+   *10002, 10004
+   
+   *Boujee, 3
+   
+   *10001 Boujee, F, 3, 36, labrador poodle, 2017-06-22, NULL
+    10002 Munchkin, F, 0, 8, dachsund chihuahua, 2017-01-13, 2017-01-31
+    10004 Marley, M, 0, 10, labrador, 2017-05-04, 2016-06-20
+    10006 Marmaduke, M, 7, 150, great dane, 2016-03-22, 2016-05-15
+    10007 Rosco, M, 5, 180, rottweiler, 2017-04-01, NULL
+    
+   *10006, 7, 150, great dane
+    10007, 5, 180, rottweiler
 
 ______________________________________________________________________________________________________________
 
