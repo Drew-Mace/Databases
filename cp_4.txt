@@ -1,0 +1,44 @@
+1. SELECT songs
+   FROM twinPeaksOST
+   WHERE artist LIKE'N%';
+   
+2. Found on our walls, giant hairy spiders drinking over by Tommy. (FROM, ON, OUTER, WHERE, GROUP BY, HAVING, SELECT, DISTINCT, ORDER BY, TOP)
+
+3. /* Will be pets database questions.
+
+______________________________________________________________________________________________________________
+
+
+2. Mushi, 03-22-2016; Seashell, NULL; Azul, 04-17-2016; Victorie, 09-01-2016; Nala, NULL;
+   Mushi, 1; Seashell, 7; Azul, 3; Victorie, 7; Nala, 1;
+   
+3. SELECT *
+   FROM cats;
+   
+   SELECT name, age
+   FROM cats
+   WHERE adoption_date IS NULL; 
+   
+   SELECT name
+   FROM cats
+   ORDER BY name ASC;
+
+4. < - Is used to determine is the object before the symbol is of a less value than the object after the symbol
+
+   > - The exact opposite of >, determines if the object before is greater than object after
+   
+   <= Determines if object before symbol is less than or equal to object after
+   
+   >= Determines if object before symbol is greater than or equal to object after
+   
+   = Determines if the objects are equal
+   
+   <> or != Either of these can be used to determine if the objects are not equal. 
+   
+   
+5. Seashell, Nala
+
+   Mushi, Seashell, Victoire, Nala
+  
+   
+   00003, 00004
