@@ -1,0 +1,100 @@
+1. SUM: Calculates the total of all numbers in a given column; A table with all movies from Director David       Lynch including run-times. We can find how long it would take to watch every movie by calling SUM on the       run-times column. 
+
+   AVG: Calculates the average of all numbers in a given column; In the David Lynch table there is also a budget column. We want to find out the average amount of money it costs him to make a movie, so we call AVG on the column.
+   
+   COUNT: Gives the total number of values in a column; We want to know how many movies David Lynch directed so we call COUNT of the title column. 
+   
+   MIN: Only the smallest value in a column is returned; We want to find the shortest David Lynch movie so we call MIN on the run-time column. 
+   
+   MAX: Only the largest value in a column is returned; Now we want to know the longest, so we call MAX on the run-times column. 
+   
+2. *$1018
+   
+   *donor SUM(amount)
+    Arya	     60
+    Bran	     25
+    Brienne	   75
+    Bronn	     20
+    Daario	   10
+    Daenerys   173
+    Gilly	     7
+    Jon	       25
+    Margaery   120
+    Melisandre 45
+    Missandei	 115
+    Petyr	     70
+    Samwell	   20
+    Sansa	     33
+    Theon	     20
+    Tormund	   50
+    Tyrion	   120
+    Ygritte	   30
+    
+  *donor AVG(amount)
+    Arya	      20
+    Bran	      25
+    Brienne	    75
+    Bronn	      20
+    Daario	    10
+    Daenerys	  86.5
+    Gilly	      7
+    Jon	        25
+    Margaery	  120
+    Melisandre  45
+    Missandei	  23
+    Petyr	      70
+    Samwell	    20
+    Sansa	      33
+    Theon	      10
+    Tormund	    50
+    Tyrion	    40
+    Ygritte	    30
+  
+  
+  *120
+  *5
+      
+   
+   
+
+3. You would use an ORDER BY statement. If you want the data to be in descending order use DESC after declaring the data you are calling. 
+
+4. You would use offset if you were ordering data with a limit but you didnt need some of the previous data that would be returned without the offset. If you had the David Lynch table and wanted to know the run-times from greatest to least, but you already knew that Inland Empire was his longest movie, you could OFFSET by 1 to return Mulholland Drive, etc..
+
+5. You need to use LIMIT and ORDER BY together because ORDER BY is how LIMIT knows what it is limiting.
+
+6. WHERE is a stand alone meaing that it can be used by itself to find a particular set of data, HAVING is used with GROUP BY and like LIMIT, thats how it knows where its looking. 
+
+7.  SELECT id, SUM (amount)
+    FROM payment
+    GROUP BY amount
+    HAVING SUM (amount) > 200;
+    
+-------------------------------------------------------------------------------------------------------------
+
+8. SELECT name
+   FROM cats
+   ORDER BY intake_date;
+   
+   SELECT name
+   FROM adoptions
+   GROUP BY date
+   LIMIT 5;
+   
+   SELECT name
+   FROM cats
+   WHERE gender = 'F'
+   AND age >= 2;
+   
+   SELECT SUM(amount) as amount, name
+   FROM donations
+   ORDER BY amount
+   LIMIT 5;
+   
+   SELECT SUM(amount) as amount, name
+   FROM donations
+   ORDER BY amount
+   LIMIT 10 OFFSET 5;
+   
+   
+   
