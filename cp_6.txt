@@ -1,0 +1,155 @@
+1. To find data in two different tables you would use one of the various joins
+
+
+Example Tables: 
+
+Manufacturers                       Slots
+
+id | name | cabinet                         id |      game     | manufacturer
+1  | IGT  | S3000                           1  | Double Diamond|  IGT
+2  | Konami| Concerto                       2  | Vibrant 7s    | Konami
+3  | Everi | Core HDX                       3  | Twin Dragons  | Everi
+
+2. CROSS JOIN will result in showing you all the possible outcomes from every column searched.
+   If we CROSS JOIN on these two tables it will give us 9 rows that will display all possible combinations of the tables. 
+  
+   INNER JOIN will result in showing all common rows between the tables.
+   If we were to query an INNER JOIN for all columns on Slots manufacturer and Manufacturers names it would result in showing us which manufacturer makes which cabinet and which game can be played in that cabinet.
+   
+   LEFT OUTER JOIN will return the entire first table and any matching rows from the other table.
+   If we SELECT slots.game and manufacturers.cabinet from manufacturers and LEFT OUTER JOIN slots ON slots.id = manufacturers.id it will return the which cabinets a game may be played on.
+   
+   
+   RIGHT OUTER JOIN is the opposite of the LEFT OUTER JOIN, instead of returning the data from the first table, it will return the data from the second as well as matching rows from the first table.
+   We would get the same output as above using the RIGHT OUT JOIN in this scenario.
+   
+   FULL OUTER JOIN will perform both RIGHT and LEFT OUTER JOIN, as well as INNER JOIN. 
+   For these tables it would display the all the information for each manufacturer in a single row. You would easily be able to discern what cabinet and game belong to which manufacturer.
+   
+3. A primary key is used as a way to identify a row. It will be specific to that row and will become the        foreign key to the other database in a JOIN. 
+   If I were doing a JOIN and I used ON slots.manufacturer = manufacturers.name, the slots.manufacturer becomes the foreign key for manufacturers and the primary for slots.
+   
+4. Aliasing is simply a way to shorten our inputs. I could type SELECT * from manufacturers as m, so that I could write m.name saving a bit of typing. 
+
+5.  SELECT p.name, c.salary, c.vacation_days 
+    FROM professor as p 
+    JOIN compensation as c
+    ON p.id = c.professor_id;
+    
+    
+6. You would use a NATURAL JOIN when you wanted to list all values of shared columns between two tables. In the slots scenario say you have just entered a bunch of new cabinets and you need to get the games ready to go out on the floor but you dont know which games can be put in that cabinet. You could have a one table with all the empty cabinets and a column for games, and the other table with the cabinets and which games can be used on them. If you did a NATURAL JOIN it would display the games that are availble for the empty cabinets. 
+
+
+7. SELECT * 
+   FROM employees as e
+   JOIN shifts as s
+   ON e.id = s.shift_id;
+   
+   SELECT *
+   FROM employees
+   CROSS JOIN shifts;
+   
+-------------------------------------------------------------------------------------------------------------   
+   Dogs(id, name, gender, age, weight, intake_date, breed, in_foster)
+   Cats(id, name, gender, age, intake_date, adoption_date)
+   Adoptions(id, adopter, cat, dog, fee, date)
+   Adopters(first_name, last_name, address, phone)
+   Volunteers(id, name, address, phone, available_to_foster, foster_id)
+   
+8. SELECT v.name, dogs.name
+   FROM volunteers as v
+   LEFT OUTER JOIN dogs
+   ON v.id = dogs.id;
+   
+   SELECT a.first_name, ad.cat, ad.dog
+   FROM adopters as a
+   LEFT OUTER JOIN adoptions as ad
+   ON a.id = ad.id
+   WHERE ad.date < 2017/22/08;
+   
+   SELECT a.first_name, ad.dog
+   FROM adopters as a
+   CROSS JOIN adoptions as ad
+   ON a.id = ad.id;
+   
+   SELECT d.name, c.name
+   FROM dogs as d
+   LEFT OUTER JOIN cats as c
+   ON d.id = c.id
+   WHERE in_foster = FALSE
+   AND adoption_date = NULL;
+   
+   SELECT v.name, d.name
+   FROM volunteers as v
+   JOIN adoptions as a
+   ON v.id = a.id
+   JOIN dogs as d 
+   ON a.id = d.id
+   JOIN adopters as ad
+   ON d.id = ad.id
+   WHERE v.availble_to_foster = TRUE
+   AND ad.dog = ad.dog
+   AND a.first_name = v.name
+   AND d.in_foster = FALSE;
+   
+9. SELECT ad.first_name          
+   FROM adopters as ad
+   JOIN cats as c
+   ON c.id = ad.id
+   JOIN adoptions as a
+   ON ad.id = a.id
+   WHERE a.date = c.adoption_date
+   AND c.name = 'Seashell';
+   
+-------------------------------------------------------------------------------------------------------------
+
+Books(isbn, title, author)
+Transactions(id, checked_out_date, checked_in_date, user_id, isbn)
+Holds(id, isbn, user_id, rank, date)
+Patrons(id, name, fine_amount)
+
+
+10. SELECT h.rank, p.name
+    FROM patrons as p
+    JOIN holds a h
+    ON p.id = h.id
+    JOIN books as b
+    ON h.isbn = b.isbn
+    WHERE b.title = 'Harry Potter and the Sorcerer's Stone'
+    AND h.isbn = (ISBN FOR THE BOOK)
+    ORDER BY h.rank;
+    
+    SELECT b.title, t.checked_out_date
+    FROM books as b
+    JOIN transactions as t
+    ON b.isbn = t.isbn
+    WHERE t.checked_in_date < 2017/22/09; (You would use the present date)
+    
+    SELECT b.title, SUM(t.checkout_out_date + t.checked_in_date)
+    FROM transactions as t
+    JOIN books as b
+    ON t.isbn = b.isbn
+    GROUP BY t.isbn;
+    
+    SELECT b.title
+    FROM books as b
+    JOIN transactions as t
+    ON b.isbn = t.isbn
+    WHERE t.checked_out_date > 2012/22/09
+    ORDER BY b.title;
+    
+    SELECT p.name, b.name
+    FROM patrons as p
+    JOIN transactions as t
+    ON t.user_id = p.id
+    JOIN books as b
+    ON t.isbn = b.isbn
+    WHERE t.user_id = p.id
+    AND t.checked_in_date = NULL
+    AND t.isbn = b.isbn
+    ORDER BY p.name;
+    
+   
+   
+   
+   
