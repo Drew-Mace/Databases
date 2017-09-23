@@ -52,6 +52,7 @@
   
   
   *120
+  *2 donations over $100
   *5
       
    
@@ -76,7 +77,7 @@
    FROM cats
    ORDER BY intake_date;
    
-   SELECT name
+   SELECT cat
    FROM adoptions
    GROUP BY date
    LIMIT 5;
@@ -88,12 +89,12 @@
    
    SELECT SUM(amount) as amount, name
    FROM donations
-   ORDER BY amount
+   ORDER BY amount DESC
    LIMIT 5;
    
    SELECT SUM(amount) as amount, name
    FROM donations
-   ORDER BY amount
+   ORDER BY amount DESC
    LIMIT 10 OFFSET 5;
    
    
