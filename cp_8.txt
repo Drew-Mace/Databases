@@ -1,0 +1,21 @@
+1. Normalization is beneficial to a database when there will be a large amount of updates. If you are keeping track of sales there could be a large number of new sales each day, with new customers. It would be better to have a sales anc customers table to keep track of this because alot of the data would be repeated, i.e Customers. The sales would be tied to customer by customer_id only the sales table need be updated for each new order by a return customer. 
+
+2. 1NF. A database is 1NF if all columns only contain one value. In our example above there would be no column    that would have multiple values in it. 
+
+   2NF follows the same design as 1NF but the non-key attributes are not able to be dependent of attributes of the primary key. So if we had our tables customer, order we would likely be keeping track of the price of the orders. This would be fine for 2NF since price would be reliant on our primary key order_id. 
+   
+   3NF follows 2NF but also any functional dependencies such as city, state in our customer table must not exist in the table. For our customer table would we need to remove these from our customer table. Create a new table containing zip, city, state. This also helps because multiple customers could very well live in the same city and we could very well already have that data stored, so instead of storing the same data multiple times its already there for us. 
+   
+   BCNF the table must be in 3NF but also every attribute in a table must be able to identify all other attributes. The above example would also satisfy BCNF.  
+   
+
+3. Professor table(professor_id, professor_name, subject)
+   Student table(student_id, student_name, student_email)
+   Entry table(entry_id, professor_id, student_id) * We could potentially get rid of this if student_id remained being in the correct order
+   Grade table(entry_id, grade)
+
+4. A possible disadvantage of normalizing the data would be if the amount if the number on entrys grew very      large. To query the data would require JOINS and it would have to read over multiple tables to find our      searches. On a very large data set this would take more time than if it was all just in one table. 
+
+5. If I needed to denormalize the tables I created I would put them all in one table as the starting example was. I would just look at each table and think of a logical way to order the columns into one table. 
+
+6. Normalization of data is ideal when you have information that may not change often. If the data will be      updated and read frequently it would be faster for queries to put into as few tables as possible. Also if    you have multiple tables adding or removing a single object would take much time than if it was just in      one table. 
