@@ -1,0 +1,176 @@
+1. A subquery is a query inside of a query. 
+
+2. You can use them in two places, inside the SELECT clause or inside the WHERE clause. 
+
+3. You employ subqueries when you want to apply a function that will only apply to a specific query and not the whole. 
+
+4. A row constructor is a way to find display information from a query in a way of your choosing. You can design the row to display the information, if found, that you declare specifically. 
+
+5. If any information inside the row constructor returns NULL the entire thing will return NULL. 
+
+6. Row constructor, EXISTS, NOT EXISTS, IN , NOT IN, ALL, ANY, SOME
+
+-------------------------------------------------------------------------------------------------------------
+
+7. EMPLOYEES                                                 
+    | empId |   name | shiftId |                              
+    |-------|--------|---------|
+    |     1 |  Jimmy |       1 |
+    |     2 |  Alana |       1 |
+    |     3 |   Nene |       2 |
+    |     4 |   Jana |       3 |
+    |     5 |   Adam |       3 |
+    |     6 |    Tom |       4 |
+    |     7 |   Drew |       4 |
+    |     8 |  Cisco |       5 |
+    |     9 |   Sean |       5 |
+    |    10 | Austin |       6 |
+    |    11 |    Kim |       6 |
+    
+    SHIFTS
+    | shiftId |   time |
+    |---------|--------|
+    |       1 |  7a-3p |
+    |       2 |  9a-5p |
+    |       3 | 11a-7p |
+    |       4 | 3p-11p |
+    |       5 |  7p-3a |
+    |       6 | 11p-7a |
+ 
+ * SELECT employees.name, employees.shiftId
+   FROM employees, shifts
+   WHERE employees.shiftId = shifts.shiftId
+   
+*  SELECT employees.name, shifts.shiftId
+   FROM employees
+   CROSS JOIN shifts;
+   
+-------------------------------------------------------------------------------------------------------------   
+8. DOGS: id, name, gender, age, weight, intake_date, breed, in_foster
+   CATS: id, name, gender, age, intake_date, adoption_date
+   ADOPTIONS: id, adopter, cat, dog, fee, date
+   ADOPTERS: first_name, last_name, address, phone
+   VOLUNTEERS: id, name, address, phone_number, available_to_foster, foster_id
+   
+  *SELECT volunteers.name, dogs.name
+   FROM volunteers v
+   WHERE adoptions.adopter = v.name
+    (SELECT dogs.name
+     FROM dogs
+     GROUP BY dogs.name);
+     
+  *SELECT adopters.first_name, adopters.last_name, dogs.name
+   FROM adopters, dogs
+   WHERE adopters.first_name = adoptions.adopter
+     (SELECT adoptions.date
+      FROM adoptions
+      WHERE adoptions.date < 2017/3/10);
+  
+  *SELECT adopters.first_name, adopters.last_name
+   FROM adopters a
+    (SELECT adoptions.adopter AS name, adoptions.dog as dog
+     FROM adoptions
+     WHERE name = adopters.first_name
+     AND dog != NULL) 
+   CROSS JOIN dogs
+   GROUP BY dogs.name;
+   
+  *SELECT dogs.name, cats.name
+   FROM dogs, cats
+   WHERE dogs.in_foster = NULL
+   AND cats.adoption_date = NULL;
+   
+   
+  *SELECT volunteers.name, dogs.name
+   FROM volunteers v, dogs 
+   WHERE v.available_to_foster = TRUE
+   (SELECT dogs.name
+    FROM dogs
+    WHERE in_foster = NULL)
+   AND 
+    (SELECT volunteers.name, dogs.name
+     FROM volunteers v, dogs
+     WHERE dogs.in_foster = TRUE
+     AND v.name = adopters.first_name
+     AND adoptions.dog = dogs.name);
+
+9. SELECT adoptions.cat
+   FROM adoptions 
+   WHERE adoptions.cat = 'Seashell';
+   
+-------------------------------------------------------------------------------------------------------------
+
+BOOKS: isbn, title, author
+TRANSACTIONS: id, checked_out_date, checked_in_date, user_id, isbn
+HOLDS: id, isbn, user_id, rank, date
+PATRONS: id, name, fine_amount
+
+
+*SELECT holds.rank, patrons.name
+ FROM holds h, patrons p
+ WHERE IN
+  (SELECT books.title
+   FROM books
+   WHERE title = 'Harry Potter and the Sorcerer’s Stone')
+ ORDER BY holds.rank;
+ 
+ 
+ *SELECT books.title
+  FROM books
+  WHERE check_in_date IN
+   (SELECT check_in_date as checkedout
+    FROM transactions t
+    WHERE check_in_date < 2017/3/10);
+    
+ *SELECT SUM(checked_in_date - checked_out_date) as time, books.title
+  FROM transactions t, books
+  WHERE t.checked_in_date > 2017/2/09
+  ORDER BY time;
+  
+  
+ *SELECT books.title
+  FROM books
+  WHERE IN
+   (SELECT checked_out_date
+    FROM transactions
+    WHERE checked_out_date > 2012/3/10);
+    
+ *SELECT patrons.name, books.title
+  FROM patrons p, books b
+  WHERE IN 
+   (SELECT transactions.user_id
+    FROM transactions t
+    WHERE t.user_id = patrons.id
+    AND t.checked_in_date = NULL);
+-------------------------------------------------------------------------------------------------------------
+
+AIRPLANES: model, seat_capacity, range
+FLIGHTS: flight_number, destination, origin, company, distance, flight_time, airplane_model
+TRANSACTIONS: id, seats_sold, total_revenue, total_cost, flight_number, date
+
+*SELECT model
+ FROM airplanes
+ WHERE IN 
+  (SELECT airplane_model
+  FROM flights f, transactions t
+  WHERE f.flight_number = t.flight_number
+  AND t.seats_sold > 100
+  AND date > 2017/2/09);
+  
+*SELECT destination, origin
+ FROM flights
+ WHERE destination = destination
+ AND origin = origin
+  (SELECT SUM(seats_sold) FROM transactions / SUM(seat_capacity) FROM airplanes * 100 as result
+   WHERE result >= 90);
+  
+*SELECT SUM(total_revenue) 
+ FROM transactions
+ WHERE EXISTS
+  (SELECT origin, destination
+   FROM flights
+   WHERE origin = 'Atlanta'
+   OR destination = 'Atlanta');
+   
+   
+12. For me joins are easier to understand, I can visualize what the tables are doing on a join. The subqueries are very logical, however it requires more thought to figure out what exactly is going on. 
