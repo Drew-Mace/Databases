@@ -12,38 +12,52 @@
 
 -------------------------------------------------------------------------------------------------------------
 
-7. EMPLOYEES                                                 
-    | empId |   name | shiftId |                              
-    |-------|--------|---------|
-    |     1 |  Jimmy |       1 |
-    |     2 |  Alana |       1 |
-    |     3 |   Nene |       2 |
-    |     4 |   Jana |       3 |
-    |     5 |   Adam |       3 |
-    |     6 |    Tom |       4 |
-    |     7 |   Drew |       4 |
-    |     8 |  Cisco |       5 |
-    |     9 |   Sean |       5 |
-    |    10 | Austin |       6 |
-    |    11 |    Kim |       6 |
+7. EMPLOYEES 
+
+   CREATE TABLE employees (
+    empId int,
+    name text, 
+    shiftId int
+    );
     
-    SHIFTS
-    | shiftId |   time |
-    |---------|--------|
-    |       1 |  7a-3p |
-    |       2 |  9a-5p |
-    |       3 | 11a-7p |
-    |       4 | 3p-11p |
-    |       5 |  7p-3a |
-    |       6 | 11p-7a |
- 
+    INSERT INTO employees (empId, name, shiftId)
+    VALUES 
+    (1, 'Jimmy', 1),
+    (2, 'Alana', 1),
+    (3, 'Nene', 2),
+    (4, 'Jana', 3),
+    (5, 'Adam', 3),
+    (6, 'Tom', 4),
+    (7, 'Drew', 4),
+    (8, 'Cisco', 5),
+    (9, 'Sean', 5),
+    (10, 'Austin', 6),
+    (11, 'Kim' 6);
+    
+    CREATE TABLE shifts (
+     shiftId int,
+     time varchar(20)
+    );
+    
+    INSERT INTO shifts (shiftId, time)
+    VALUES
+    (1, '7a-3p'),
+    (2, '9a-5p'),
+    (3, '11a-7p'),
+    (4, '3p-11p'),
+    (5, '7p-3a'),
+    (6, '11p-7a');
+    
  * SELECT employees.name, employees.shiftId
    FROM employees, shifts
    WHERE employees.shiftId = shifts.shiftId
    
 *  SELECT employees.name, shifts.shiftId
-   FROM employees
-   CROSS JOIN shifts;
+   FROM employees, shifts
+   WHERE employees.shiftId IN
+   (SELECT shifts.shiftId
+    FROM shifts
+    WHERE shifts.shiftId = employees.shiftId);
    
 -------------------------------------------------------------------------------------------------------------   
 8. DOGS: id, name, gender, age, weight, intake_date, breed, in_foster
@@ -53,37 +67,42 @@
    VOLUNTEERS: id, name, address, phone_number, available_to_foster, foster_id
    
   *SELECT volunteers.name, dogs.name
-   FROM volunteers v
-   WHERE adoptions.adopter = v.name
-    (SELECT dogs.name
-     FROM dogs
-     GROUP BY dogs.name);
+   FROM volunteers, dogs
+   WHERE adoptions.id IN
+    (SELECT adoptions.id
+     FROM adoptions
+     WHERE adoptions.id = volunteers.id
+     AND adoptions.dog = dogs.id)
+   AND volunteers.name = volunteers.name
+   ORDER BY dogs.name;
      
   *SELECT adopters.first_name, adopters.last_name, dogs.name
    FROM adopters, dogs
-   WHERE adopters.first_name = adoptions.adopter
-     (SELECT adoptions.date
+   WHERE adoptions.date IN
+    (SELECT adoptions.date
       FROM adoptions
-      WHERE adoptions.date < 2017/3/10);
+      WHERE adoptions.date < '2017/3/10')
+   AND adopters.first_name = adoptions.adopter;
+     
   
-  *SELECT adopters.first_name, adopters.last_name
-   FROM adopters a
-    (SELECT adoptions.adopter AS name, adoptions.dog as dog
+  *SELECT adopters.first_name, adopters.last_name, dogs.name
+   FROM adopters, dogs 
+   WHERE adoptions.adopter NOT IN 
+    (SELECT adoptions.adopter
      FROM adoptions
-     WHERE name = adopters.first_name
-     AND dog != NULL) 
-   CROSS JOIN dogs
-   GROUP BY dogs.name;
+     WHERE adoptions.adopter = adopters.first_name)
+   AND dogs.id = dogs.id;
+    
    
   *SELECT dogs.name, cats.name
    FROM dogs, cats
    WHERE dogs.in_foster = NULL
-   AND cats.adoption_date = NULL;
+   AND cats.adoption_date = NULL
    
    
   *SELECT volunteers.name, dogs.name
    FROM volunteers v, dogs 
-   WHERE v.available_to_foster = TRUE
+   WHERE dogs.name IN 
    (SELECT dogs.name
     FROM dogs
     WHERE in_foster = NULL)
@@ -92,11 +111,16 @@
      FROM volunteers v, dogs
      WHERE dogs.in_foster = TRUE
      AND v.name = adopters.first_name
-     AND adoptions.dog = dogs.name);
+     AND adoptions.dog = dogs.name)
+   AND v.available_to_foster = TRUE;
 
 9. SELECT adoptions.cat
    FROM adoptions 
-   WHERE adoptions.cat = 'Seashell';
+   WHERE cats.id IN
+    (SELECT cats.id
+     FROM cats
+     WHERE adoptions.cat = cat.id
+     AND cat.name = 'Seashell);
    
 -------------------------------------------------------------------------------------------------------------
 
@@ -108,7 +132,7 @@ PATRONS: id, name, fine_amount
 
 *SELECT holds.rank, patrons.name
  FROM holds h, patrons p
- WHERE IN
+ WHERE books.title IN
   (SELECT books.title
    FROM books
    WHERE title = 'Harry Potter and the Sorcerer’s Stone')
@@ -120,24 +144,24 @@ PATRONS: id, name, fine_amount
   WHERE check_in_date IN
    (SELECT check_in_date as checkedout
     FROM transactions t
-    WHERE check_in_date < 2017/3/10);
+    WHERE check_in_date < '2017/3/10');
     
  *SELECT SUM(checked_in_date - checked_out_date) as time, books.title
   FROM transactions t, books
-  WHERE t.checked_in_date > 2017/2/09
+  WHERE t.checked_in_date > '2017/2/09'
   ORDER BY time;
   
   
  *SELECT books.title
   FROM books
-  WHERE IN
+  WHERE checked_out_date IN
    (SELECT checked_out_date
     FROM transactions
     WHERE checked_out_date > 2012/3/10);
     
  *SELECT patrons.name, books.title
   FROM patrons p, books b
-  WHERE IN 
+  WHERE tranasactions.user_id IN 
    (SELECT transactions.user_id
     FROM transactions t
     WHERE t.user_id = patrons.id
@@ -150,7 +174,7 @@ TRANSACTIONS: id, seats_sold, total_revenue, total_cost, flight_number, date
 
 *SELECT model
  FROM airplanes
- WHERE IN 
+ WHERE airplane_model IN 
   (SELECT airplane_model
   FROM flights f, transactions t
   WHERE f.flight_number = t.flight_number
